@@ -15,7 +15,6 @@ enum DifficultyTier: String, Codable, CaseIterable {
 struct LevelConfig: Codable, Equatable {
     let id: LevelID
     let runSpeed: CGFloat
-    let jumpImpulse: CGFloat
     let gravity: CGFloat
     let finishX: CGFloat
     let obstacleRects: [CGRect]
@@ -23,43 +22,25 @@ struct LevelConfig: Codable, Equatable {
     static let easy1 = LevelConfig(
         id: LevelID(tier: .easy, index: 1),
         runSpeed: 220,
-        jumpImpulse: 390,
-        gravity: -980,
+        gravity: GameplayTuning.gravity,
         finishX: 2200,
-        obstacleRects: [
-            CGRect(x: 550, y: 0, width: 40, height: 80),
-            CGRect(x: 980, y: 0, width: 50, height: 95),
-            CGRect(x: 1410, y: 0, width: 55, height: 110)
-        ]
+        obstacleRects: makeObstacleCourse(baseX: 520, pattern: [1, 1, 1])
     )
 
     static let easy2 = LevelConfig(
         id: LevelID(tier: .easy, index: 2),
         runSpeed: 240,
-        jumpImpulse: 395,
-        gravity: -1000,
-        finishX: 2400,
-        obstacleRects: [
-            CGRect(x: 520, y: 0, width: 44, height: 82),
-            CGRect(x: 900, y: 0, width: 54, height: 98),
-            CGRect(x: 1280, y: 0, width: 58, height: 114),
-            CGRect(x: 1710, y: 0, width: 62, height: 118)
-        ]
+        gravity: GameplayTuning.gravity,
+        finishX: 2450,
+        obstacleRects: makeObstacleCourse(baseX: 500, pattern: [1, 2, 1, 2])
     )
 
     static let easy3 = LevelConfig(
         id: LevelID(tier: .easy, index: 3),
         runSpeed: 260,
-        jumpImpulse: 400,
-        gravity: -1020,
-        finishX: 2600,
-        obstacleRects: [
-            CGRect(x: 510, y: 0, width: 46, height: 88),
-            CGRect(x: 860, y: 0, width: 56, height: 106),
-            CGRect(x: 1210, y: 0, width: 60, height: 118),
-            CGRect(x: 1560, y: 0, width: 64, height: 124),
-            CGRect(x: 1960, y: 0, width: 68, height: 128)
-        ]
+        gravity: GameplayTuning.gravity,
+        finishX: 2700,
+        obstacleRects: makeObstacleCourse(baseX: 480, pattern: [2, 2, 1, 2, 2])
     )
 
     static var easyTier: [LevelConfig] {
@@ -83,5 +64,27 @@ struct LevelConfig: Codable, Equatable {
         case 2: return .easy3
         default: return nil
         }
+    }
+
+    // pattern values represent how many consecutive jumps are required in that segment.
+    private static func makeObstacleCourse(baseX: CGFloat, pattern: [Int]) -> [CGRect] {
+        var rects: [CGRect] = []
+        var x = baseX
+
+        for jumpCount in pattern {
+            for jumpIndex in 0..<jumpCount {
+                rects.append(
+                    CGRect(
+                        x: x,
+                        y: 0,
+                        width: GameplayTuning.obstacleWidth,
+                        height: GameplayTuning.obstacleHeight
+                    )
+                )
+                x += jumpIndex == jumpCount - 1 ? GameplayTuning.obstacleSpacing : GameplayTuning.comboSpacing
+            }
+        }
+
+        return rects
     }
 }

@@ -11,7 +11,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     private let worldNode = SKNode()
     private var obstacleNodes: [SKSpriteNode] = []
 
-    private var player = SKSpriteNode(color: .clear, size: CGSize(width: 27, height: 36))
+    private var player = SKSpriteNode(color: .clear, size: GameplayTuning.characterSize)
     private var didSetup = false
     private var isOnGround = false
     private var didEndRun = false
@@ -126,8 +126,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
 
     private func jump() {
         guard isOnGround else { return }
-        player.physicsBody?.velocity.dy = 0
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: controller.level.jumpImpulse))
+        player.physicsBody?.velocity.dy = GameplayTuning.jumpVelocity
         onJump?()
     }
 
@@ -169,6 +168,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.restitution = 0
+        player.physicsBody?.mass = 1
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
         player.physicsBody?.collisionBitMask = PhysicsCategory.ground | PhysicsCategory.obstacle
         player.physicsBody?.contactTestBitMask = PhysicsCategory.ground | PhysicsCategory.obstacle | PhysicsCategory.finish

@@ -21,6 +21,7 @@
 		6CB7566EA2AEACC4F62D40F1 /* iOSGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAB83FEBB8CEF0827A5D1E4 /* iOSGameApp.swift */; };
 		6F6B8769FCC272ABD841CA75 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D1F64844FDB2C9B741E17F /* Foundation.framework */; };
 		706C4B5118524CE869C936A9 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14E44217C6AFF84C4E24F58 /* GameState.swift */; };
+		76C41438D3C1BA08C5CDBAC7 /* GameplayTuning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0AD45642690B9624F289C0 /* GameplayTuning.swift */; };
 		8778ED12A5542858BFE87763 /* SnapshotTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F00215FB53898207832EB60 /* SnapshotTestCase.swift */; };
 		90A0D805C63B58FE41296CD2 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CC71D75C897CB10DDBE3D /* HapticsManager.swift */; };
 		9C7C1838A4E2D61B10E1058B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D1F64844FDB2C9B741E17F /* Foundation.framework */; };
@@ -54,6 +55,7 @@
 		196BAC4381A63C0AB4BB25D5 /* GameplayContainerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameplayContainerView.swift; path = Features/GameScene/GameplayContainerView.swift; sourceTree = "<group>"; };
 		2A2913F7ADA3F513D665F634 /* GameSessionControllerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameSessionControllerTests.swift; sourceTree = "<group>"; };
 		2A68294724445F6710B3ADA6 /* iOSGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D0AD45642690B9624F289C0 /* GameplayTuning.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameplayTuning.swift; path = Models/GameplayTuning.swift; sourceTree = "<group>"; };
 		319AA82C271995167AE57033 /* RootViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RootViewModel.swift; path = App/RootViewModel.swift; sourceTree = "<group>"; };
 		3707F01882BB9C3C31C294B1 /* HomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HomeView.swift; path = Features/Menu/HomeView.swift; sourceTree = "<group>"; };
 		37DDC1698DB21DA378FAC41F /* PlatformerScene.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlatformerScene.swift; path = Features/GameScene/PlatformerScene.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				798619E0D638BAEF4BB356C8 /* ProgressionStore.swift */,
 				D8BC1309F0A438285286D273 /* PixelCharacterNode.swift */,
 				8A0D3AF31B9F168E4D91BE78 /* PixelPalette.swift */,
+				2D0AD45642690B9624F289C0 /* GameplayTuning.swift */,
 			);
 			name = iOSGame;
 			path = iOSGame;
@@ -321,6 +324,7 @@
 				C4D114C5058F989CE6565E6D /* ProgressionStore.swift in Sources */,
 				ADB9127244D32F3D66FD3D9A /* PixelCharacterNode.swift in Sources */,
 				E5F4DE52C8E409686FD88A6E /* PixelPalette.swift in Sources */,
+				76C41438D3C1BA08C5CDBAC7 /* GameplayTuning.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
