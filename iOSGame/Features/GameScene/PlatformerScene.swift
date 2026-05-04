@@ -8,7 +8,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     private var onJump: (() -> Void)?
     private var onResult: ((Bool) -> Void)?
 
-    private var player = SKSpriteNode(color: .white, size: CGSize(width: 36, height: 36))
+    private var player = SKSpriteNode(color: .clear, size: CGSize(width: 24, height: 32))
     private var didSetup = false
     private var isOnGround = false
     private var didEndRun = false
@@ -24,17 +24,9 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         return nil
     }
 
-    func setProgressListener(_ listener: @escaping (Int) -> Void) {
-        onProgress = listener
-    }
-
-    func setJumpListener(_ listener: @escaping () -> Void) {
-        onJump = listener
-    }
-
-    func setResultListener(_ listener: @escaping (Bool) -> Void) {
-        onResult = listener
-    }
+    func setProgressListener(_ listener: @escaping (Int) -> Void) { onProgress = listener }
+    func setJumpListener(_ listener: @escaping () -> Void) { onJump = listener }
+    func setResultListener(_ listener: @escaping (Bool) -> Void) { onResult = listener }
 
     func pauseGameplay() {
         guard controller.state.phase == .running else { return }
@@ -52,10 +44,11 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         guard !didSetup else { return }
         didSetup = true
 
-        backgroundColor = .black
+        backgroundColor = SKColor(red: 0.39, green: 0.73, blue: 0.76, alpha: 1)
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: controller.level.gravity)
 
+        setupBackgroundMountains()
         setupGround()
         setupPlayer()
         setupObstacles()
@@ -83,36 +76,21 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         let mask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-
-        if mask == (PhysicsCategory.player | PhysicsCategory.ground) {
-            isOnGround = true
-        }
-
-        if mask == (PhysicsCategory.player | PhysicsCategory.obstacle) {
-            endRun(completed: false)
-        }
-
-        if mask == (PhysicsCategory.player | PhysicsCategory.finish) {
-            endRun(completed: true)
-        }
+        if mask == (PhysicsCategory.player | PhysicsCategory.ground) { isOnGround = true }
+        if mask == (PhysicsCategory.player | PhysicsCategory.obstacle) { endRun(completed: false) }
+        if mask == (PhysicsCategory.player | PhysicsCategory.finish) { endRun(completed: true) }
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
         let mask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        if mask == (PhysicsCategory.player | PhysicsCategory.ground) {
-            isOnGround = false
-        }
+        if mask == (PhysicsCategory.player | PhysicsCategory.ground) { isOnGround = false }
     }
 
     private func endRun(completed: Bool) {
         guard !didEndRun else { return }
         didEndRun = true
 
-        if completed {
-            controller.complete()
-        } else {
-            controller.fail()
-        }
+        if completed { controller.complete() } else { controller.fail() }
 
         isPaused = true
         onResult?(completed)
@@ -126,7 +104,31 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         onJump?()
     }
 
+    private func setupBackgroundMountains() {
+        let leftMountain = SKSpriteNode(color: SKColor(red: 0.24, green: 0.62, blue: 0.64, alpha: 1), size: CGSize(width: 240, height: 180))
+        leftMountain.position = CGPoint(x: 110, y: 240)
+        leftMountain.zRotation = 0.78
+        leftMountain.alpha = 0.55
+        addChild(leftMountain)
+
+        let rightMountain = SKSpriteNode(color: SKColor(red: 0.33, green: 0.70, blue: 0.71, alpha: 1), size: CGSize(width: 180, height: 140))
+        rightMountain.position = CGPoint(x: 300, y: 210)
+        rightMountain.zRotation = 0.78
+        rightMountain.alpha = 0.45
+        addChild(rightMountain)
+    }
+
     private func setupGround() {
+        let groundVisual = SKSpriteNode(color: SKColor(red: 0.65, green: 0.79, blue: 0.23, alpha: 1), size: CGSize(width: 7000, height: 120))
+        groundVisual.anchorPoint = CGPoint(x: 0.5, y: 0)
+        groundVisual.position = CGPoint(x: 0, y: 0)
+        addChild(groundVisual)
+
+        let groundLine = SKSpriteNode(color: SKColor(red: 0.58, green: 0.72, blue: 0.19, alpha: 1), size: CGSize(width: 7000, height: 8))
+        groundLine.anchorPoint = CGPoint(x: 0.5, y: 0)
+        groundLine.position = CGPoint(x: 0, y: 112)
+        addChild(groundLine)
+
         let ground = SKNode()
         ground.position = CGPoint(x: 0, y: 70)
         ground.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: -3000, y: 0), to: CGPoint(x: 3000, y: 0))
@@ -143,12 +145,17 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
         player.physicsBody?.collisionBitMask = PhysicsCategory.ground | PhysicsCategory.obstacle
         player.physicsBody?.contactTestBitMask = PhysicsCategory.ground | PhysicsCategory.obstacle | PhysicsCategory.finish
+
+        let pixelHuman = PixelCharacterNode(pixel: 4)
+        pixelHuman.position = CGPoint(x: -16, y: -16)
+        player.addChild(pixelHuman)
+
         addChild(player)
     }
 
     private func setupObstacles() {
         for rect in controller.level.obstacleRects {
-            let node = SKSpriteNode(color: .red, size: rect.size)
+            let node = SKSpriteNode(color: SKColor(red: 0.89, green: 0.35, blue: 0.23, alpha: 1), size: rect.size)
             node.anchorPoint = CGPoint(x: 0.5, y: 0)
             node.position = CGPoint(x: rect.midX, y: 70)
             node.physicsBody = SKPhysicsBody(rectangleOf: node.size, center: CGPoint(x: 0, y: node.size.height / 2))
@@ -161,7 +168,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func setupFinish() {
-        let finish = SKSpriteNode(color: .green, size: CGSize(width: 24, height: 180))
+        let finish = SKSpriteNode(color: SKColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1), size: CGSize(width: 24, height: 180))
         finish.anchorPoint = CGPoint(x: 0.5, y: 0)
         finish.position = CGPoint(x: controller.level.finishX, y: 70)
         finish.physicsBody = SKPhysicsBody(rectangleOf: finish.size, center: CGPoint(x: 0, y: finish.size.height / 2))

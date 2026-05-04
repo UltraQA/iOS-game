@@ -21,11 +21,13 @@
 		90A0D805C63B58FE41296CD2 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CC71D75C897CB10DDBE3D /* HapticsManager.swift */; };
 		9C7C1838A4E2D61B10E1058B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D1F64844FDB2C9B741E17F /* Foundation.framework */; };
 		ADABA992992EB8D8AA4DC8B7 /* GameplayContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196BAC4381A63C0AB4BB25D5 /* GameplayContainerView.swift */; };
+		ADB9127244D32F3D66FD3D9A /* PixelCharacterNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BC1309F0A438285286D273 /* PixelCharacterNode.swift */; };
 		B4500594C66313113FED1CA8 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2D750995E38066405261AD /* AudioManager.swift */; };
 		BDE3C38CEEA7893D714868AA /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E87EA91C2E79BF4C83FE64 /* GameSessionController.swift */; };
 		C24C09CA0226A3C323D6887F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6E24B26DA3C23C13974796 /* RootView.swift */; };
 		C4D114C5058F989CE6565E6D /* ProgressionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798619E0D638BAEF4BB356C8 /* ProgressionStore.swift */; };
 		C7C9695E6DDF8B0090080294 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3707F01882BB9C3C31C294B1 /* HomeView.swift */; };
+		E5F4DE52C8E409686FD88A6E /* PixelPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0D3AF31B9F168E4D91BE78 /* PixelPalette.swift */; };
 		E7B3247C151524F6F6CEC2C8 /* LevelModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F707990CDCBA5FABBEF4F031 /* LevelModels.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,8 +47,10 @@
 		68E87EA91C2E79BF4C83FE64 /* GameSessionController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameSessionController.swift; path = Features/GameScene/GameSessionController.swift; sourceTree = "<group>"; };
 		798619E0D638BAEF4BB356C8 /* ProgressionStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProgressionStore.swift; path = Services/ProgressionStore.swift; sourceTree = "<group>"; };
 		7CD5F6DCCF875AAF847B7404 /* GamePhaseMachine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GamePhaseMachine.swift; path = Core/Engine/GamePhaseMachine.swift; sourceTree = "<group>"; };
+		8A0D3AF31B9F168E4D91BE78 /* PixelPalette.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PixelPalette.swift; path = Utils/PixelPalette.swift; sourceTree = "<group>"; };
 		A14E44217C6AFF84C4E24F58 /* GameState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameState.swift; path = Models/GameState.swift; sourceTree = "<group>"; };
 		CC902742BBABF343A04C3D96 /* LevelSelectView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LevelSelectView.swift; path = Features/Menu/LevelSelectView.swift; sourceTree = "<group>"; };
+		D8BC1309F0A438285286D273 /* PixelCharacterNode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PixelCharacterNode.swift; path = Features/GameScene/PixelCharacterNode.swift; sourceTree = "<group>"; };
 		D9C07420FEB8778DC27958A9 /* AppEnvironment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppEnvironment.swift; path = App/AppEnvironment.swift; sourceTree = "<group>"; };
 		EB2D750995E38066405261AD /* AudioManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioManager.swift; path = Core/Managers/AudioManager.swift; sourceTree = "<group>"; };
 		F707990CDCBA5FABBEF4F031 /* LevelModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LevelModels.swift; path = Models/LevelModels.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 				67F3CB62F30767E4EF90A3AE /* UserDefaultsScoreStorage.swift */,
 				CC902742BBABF343A04C3D96 /* LevelSelectView.swift */,
 				798619E0D638BAEF4BB356C8 /* ProgressionStore.swift */,
+				D8BC1309F0A438285286D273 /* PixelCharacterNode.swift */,
+				8A0D3AF31B9F168E4D91BE78 /* PixelPalette.swift */,
 			);
 			name = iOSGame;
 			path = iOSGame;
@@ -208,6 +214,8 @@
 				2109954C7DC728F84E86F5E5 /* UserDefaultsScoreStorage.swift in Sources */,
 				2CE991F7B634663A0C2BD8BD /* LevelSelectView.swift in Sources */,
 				C4D114C5058F989CE6565E6D /* ProgressionStore.swift in Sources */,
+				ADB9127244D32F3D66FD3D9A /* PixelCharacterNode.swift in Sources */,
+				E5F4DE52C8E409686FD88A6E /* PixelPalette.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
