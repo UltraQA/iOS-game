@@ -8,12 +8,18 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     private var onJump: (() -> Void)?
     private var onResult: ((Bool) -> Void)?
 
-    private var player = SKSpriteNode(color: .clear, size: CGSize(width: 27, height: 36))
+    private let worldNode = SKNode()
     private var obstacleNodes: [SKSpriteNode] = []
+
+    private var player = SKSpriteNode(color: .clear, size: CGSize(width: 27, height: 36))
     private var didSetup = false
     private var isOnGround = false
     private var didEndRun = false
 
+    private var lastUpdateTime: TimeInterval = 0
+    private var traveledDistance: CGFloat = 0
+
+    private let playerAnchorX: CGFloat = 120
     private var groundTopY: CGFloat { size.height * 0.35 }
     private var groundHeight: CGFloat { size.height * 0.35 }
 
@@ -52,6 +58,8 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: controller.level.gravity)
 
+        addChild(worldNode)
+
         setupBackgroundMountains()
         setupGround()
         setupPlayer()
@@ -69,8 +77,18 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         guard controller.state.phase == .running else { return }
 
-        player.physicsBody?.velocity.dx = controller.level.runSpeed
-        controller.updateProgress(playerX: player.position.x)
+        if lastUpdateTime == 0 {
+            lastUpdateTime = currentTime
+        }
+        let dt = min(max(currentTime - lastUpdateTime, 0), 1.0 / 30.0)
+        lastUpdateTime = currentTime
+
+        let dx = controller.level.runSpeed * CGFloat(dt)
+        traveledDistance += dx
+        worldNode.position.x -= dx
+
+        let virtualPlayerX = playerAnchorX + traveledDistance
+        controller.updateProgress(playerX: virtualPlayerX)
         onProgress?(controller.state.score)
 
         if player.position.y < -80 {
@@ -78,8 +96,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        // Fallback collision guard: ensures fail if physics contact callback is missed.
-        if obstacleNodes.contains(where: { player.frame.intersects($0.frame) }) {
+        if obstacleNodes.contains(where: { player.frame.intersects($0.calculateAccumulatedFrame()) }) {
             endRun(completed: false)
         }
     }
@@ -119,25 +136,25 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         leftMountain.position = CGPoint(x: size.width * 0.28, y: size.height * 0.62)
         leftMountain.zRotation = 0.78
         leftMountain.alpha = 0.55
-        addChild(leftMountain)
+        worldNode.addChild(leftMountain)
 
         let rightMountain = SKSpriteNode(color: SKColor(red: 0.33, green: 0.70, blue: 0.71, alpha: 1), size: CGSize(width: 180, height: 140))
         rightMountain.position = CGPoint(x: size.width * 0.76, y: size.height * 0.58)
         rightMountain.zRotation = 0.78
         rightMountain.alpha = 0.45
-        addChild(rightMountain)
+        worldNode.addChild(rightMountain)
     }
 
     private func setupGround() {
         let groundVisual = SKSpriteNode(color: SKColor(red: 0.65, green: 0.79, blue: 0.23, alpha: 1), size: CGSize(width: 7000, height: groundHeight))
         groundVisual.anchorPoint = CGPoint(x: 0.5, y: 0)
         groundVisual.position = CGPoint(x: 0, y: 0)
-        addChild(groundVisual)
+        worldNode.addChild(groundVisual)
 
         let groundLine = SKSpriteNode(color: SKColor(red: 0.58, green: 0.72, blue: 0.19, alpha: 1), size: CGSize(width: 7000, height: 8))
         groundLine.anchorPoint = CGPoint(x: 0.5, y: 0)
         groundLine.position = CGPoint(x: 0, y: groundTopY)
-        addChild(groundLine)
+        worldNode.addChild(groundLine)
 
         let ground = SKNode()
         ground.position = CGPoint(x: 0, y: groundTopY)
@@ -148,7 +165,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func setupPlayer() {
-        player.position = CGPoint(x: 120, y: groundTopY + player.size.height * 0.5)
+        player.position = CGPoint(x: playerAnchorX, y: groundTopY + player.size.height * 0.5)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.restitution = 0
@@ -175,7 +192,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
             node.physicsBody?.contactTestBitMask = PhysicsCategory.player
             node.physicsBody?.collisionBitMask = PhysicsCategory.player
             obstacleNodes.append(node)
-            addChild(node)
+            worldNode.addChild(node)
         }
     }
 
@@ -188,6 +205,6 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         finish.physicsBody?.categoryBitMask = PhysicsCategory.finish
         finish.physicsBody?.contactTestBitMask = PhysicsCategory.player
         finish.physicsBody?.collisionBitMask = 0
-        addChild(finish)
+        worldNode.addChild(finish)
     }
 }
