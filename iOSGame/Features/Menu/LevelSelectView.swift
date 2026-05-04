@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct LevelSelectView: View {
+    let levels: [LevelConfig]
+    let isUnlocked: (LevelConfig) -> Bool
     let onSelectLevel: (LevelConfig) -> Void
     let onBack: () -> Void
 
@@ -10,14 +12,14 @@ struct LevelSelectView: View {
                 Text("Easy")
                     .font(.title2.weight(.bold))
 
-                LevelRow(
-                    title: "Level 1",
-                    unlocked: true,
-                    action: { onSelectLevel(.easy1) }
-                )
-
-                LevelRow(title: "Level 2", unlocked: false, action: {})
-                LevelRow(title: "Level 3", unlocked: false, action: {})
+                ForEach(levels, id: \.id) { level in
+                    let unlocked = isUnlocked(level)
+                    LevelRow(
+                        title: "Level \(level.id.index)",
+                        unlocked: unlocked,
+                        action: { onSelectLevel(level) }
+                    )
+                }
 
                 Spacer()
             }

@@ -78,11 +78,11 @@ Owner: UI Agent
 Control: Product Agent
 
 ## Phase 4: Progression and Persistence
-- [ ] Status: `todo` | Implement level unlock progression per tier.
+- [ ] Status: `in-progress` | Implement level unlock progression per tier.
 Owner: Gameplay Engineer Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Implement persistent save for best score/stars/unlocks.
+- [ ] Status: `in-progress` | Implement persistent save for best score/stars/unlocks.
 Owner: iOS Architect Agent
 Control: Product Agent
 

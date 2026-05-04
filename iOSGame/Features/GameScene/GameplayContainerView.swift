@@ -10,16 +10,25 @@ private enum RunOverlayState {
 
 struct GameplayContainerView: View {
     let level: LevelConfig
+    let onCompleted: (LevelID) -> Void
+    let onNextLevel: (LevelID) -> Void
     let onExitHome: () -> Void
 
     @State private var score: Int = 0
     @State private var scene: SKScene
     @State private var overlay: RunOverlayState = .none
 
-    init(level: LevelConfig, onExitHome: @escaping () -> Void) {
+    init(
+        level: LevelConfig,
+        onCompleted: @escaping (LevelID) -> Void,
+        onNextLevel: @escaping (LevelID) -> Void,
+        onExitHome: @escaping () -> Void
+    ) {
         self.level = level
+        self.onCompleted = onCompleted
+        self.onNextLevel = onNextLevel
         self.onExitHome = onExitHome
-        _scene = State(initialValue: GameplayContainerView.makeScene(level: level, score: .constant(0), overlay: .constant(.none)))
+        _scene = State(initialValue: GameplayContainerView.makeScene(level: level, score: .constant(0), overlay: .constant(.none), onCompleted: onCompleted))
     }
 
     var body: some View {
@@ -36,7 +45,7 @@ struct GameplayContainerView: View {
                     state: overlay,
                     onResume: resumeTapped,
                     onRetry: retryTapped,
-                    onNext: retryTapped,
+                    onNext: { onNextLevel(level.id) },
                     onHome: onExitHome
                 )
             }
@@ -65,7 +74,7 @@ struct GameplayContainerView: View {
     private func retryTapped() {
         score = 0
         overlay = .none
-        scene = GameplayContainerView.makeScene(level: level, score: $score, overlay: $overlay)
+        scene = GameplayContainerView.makeScene(level: level, score: $score, overlay: $overlay, onCompleted: onCompleted)
         attachSceneListeners()
     }
 
@@ -77,7 +86,12 @@ struct GameplayContainerView: View {
         }
     }
 
-    private static func makeScene(level: LevelConfig, score: Binding<Int>, overlay: Binding<RunOverlayState>) -> SKScene {
+    private static func makeScene(
+        level: LevelConfig,
+        score: Binding<Int>,
+        overlay: Binding<RunOverlayState>,
+        onCompleted: @escaping (LevelID) -> Void
+    ) -> SKScene {
         let controller = GameSessionController(level: level)
         return PlatformerScene(
             size: CGSize(width: 390, height: 844),
@@ -85,6 +99,9 @@ struct GameplayContainerView: View {
             onFinish: { completed, finalScore in
                 score.wrappedValue = finalScore
                 overlay.wrappedValue = completed ? .completed : .failed
+                if completed {
+                    onCompleted(level.id)
+                }
             }
         )
     }
