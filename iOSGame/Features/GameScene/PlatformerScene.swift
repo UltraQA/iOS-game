@@ -9,6 +9,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     private var onResult: ((Bool) -> Void)?
 
     private var player = SKSpriteNode(color: .clear, size: CGSize(width: 27, height: 36))
+    private var obstacleNodes: [SKSpriteNode] = []
     private var didSetup = false
     private var isOnGround = false
     private var didEndRun = false
@@ -73,6 +74,12 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         onProgress?(controller.state.score)
 
         if player.position.y < -80 {
+            endRun(completed: false)
+            return
+        }
+
+        // Fallback collision guard: ensures fail if physics contact callback is missed.
+        if obstacleNodes.contains(where: { player.frame.intersects($0.frame) }) {
             endRun(completed: false)
         }
     }
@@ -157,6 +164,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func setupObstacles() {
+        obstacleNodes = []
         for rect in controller.level.obstacleRects {
             let node = SKSpriteNode(color: SKColor(red: 0.89, green: 0.35, blue: 0.23, alpha: 1), size: rect.size)
             node.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -166,6 +174,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
             node.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
             node.physicsBody?.contactTestBitMask = PhysicsCategory.player
             node.physicsBody?.collisionBitMask = PhysicsCategory.player
+            obstacleNodes.append(node)
             addChild(node)
         }
     }

@@ -103,7 +103,7 @@ Control: Product Agent
 Owner: QA/Test Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Run manual regression checklist on simulator.
+- [x] Status: `done` | Run manual regression checklist on simulator.
 Owner: QA/Test Agent
 Control: Product Agent
 

@@ -16,6 +16,7 @@ struct GameplayContainerView: View {
 
     @State private var score: Int = 0
     @State private var scene: SKScene
+    @State private var sceneVersion: Int = 0
     @State private var overlay: RunOverlayState = .none
 
     private let haptics = HapticsManager()
@@ -37,6 +38,7 @@ struct GameplayContainerView: View {
     var body: some View {
         ZStack(alignment: .top) {
             SpriteView(scene: scene)
+                .id(sceneVersion)
                 .ignoresSafeArea()
 
             HUDView(score: score, onPause: pauseTapped)
@@ -82,6 +84,7 @@ struct GameplayContainerView: View {
         overlay = .none
         haptics.impactLight()
         scene = GameplayContainerView.makeScene(level: level, score: $score, overlay: $overlay, onCompleted: onCompleted)
+        sceneVersion += 1
         attachSceneListeners()
     }
 
