@@ -99,7 +99,7 @@ Control: Product Agent
 Owner: QA/Test Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Add snapshot tests for key screens and overlays.
+- [x] Status: `done` | Add snapshot tests for key screens and overlays.
 Owner: QA/Test Agent
 Control: Product Agent
 
