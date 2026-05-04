@@ -91,11 +91,11 @@ Owner: Gameplay Engineer Agent
 Control: Product Agent
 
 ## Phase 5: QA and Test Coverage
-- [ ] Status: `in-progress` | Add unit tests for state transitions and progression rules.
+- [x] Status: `done` | Add unit tests for state transitions and progression rules.
 Owner: QA/Test Agent
 Control: Product Agent
 
-- [ ] Status: `in-progress` | Add unit tests for service contracts and persistence.
+- [x] Status: `done` | Add unit tests for service contracts and persistence.
 Owner: QA/Test Agent
 Control: Product Agent
 
