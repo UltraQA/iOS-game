@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    let canContinue: Bool
+    let onContinue: () -> Void
     let onPlay: () -> Void
 
     var body: some View {
@@ -11,6 +13,12 @@ struct HomeView: View {
             Text("Jump with timing. Reach the finish gate.")
                 .font(.headline)
                 .foregroundStyle(.secondary)
+
+            if canContinue {
+                Button("Continue", action: onContinue)
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+            }
 
             Button("Play", action: onPlay)
                 .buttonStyle(.borderedProminent)

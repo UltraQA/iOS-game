@@ -66,6 +66,16 @@ struct LevelConfig: Codable, Equatable {
         [.easy1, .easy2, .easy3]
     }
 
+    static func level(for id: LevelID) -> LevelConfig? {
+        guard id.tier == .easy else { return nil }
+        switch id.index {
+        case 1: return .easy1
+        case 2: return .easy2
+        case 3: return .easy3
+        default: return nil
+        }
+    }
+
     static func nextLevel(after id: LevelID) -> LevelConfig? {
         guard id.tier == .easy else { return nil }
         switch id.index {

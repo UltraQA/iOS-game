@@ -15,7 +15,23 @@ final class RootViewModel: ObservableObject {
     }
 
     func start(level: LevelConfig) {
+        progressionStore.saveLastPlayedLevel(level.id)
         route = .gameplay(level)
+    }
+
+    func continueLastLevel() {
+        guard let levelID = progressionStore.lastPlayedLevel(),
+              isUnlocked(levelID),
+              let level = LevelConfig.level(for: levelID) else {
+            start(level: .easy1)
+            return
+        }
+        start(level: level)
+    }
+
+    func canContinue() -> Bool {
+        guard let levelID = progressionStore.lastPlayedLevel() else { return false }
+        return isUnlocked(levelID)
     }
 
     func complete(levelID: LevelID) {

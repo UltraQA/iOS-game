@@ -10,7 +10,11 @@ struct RootView: View {
     var body: some View {
         switch viewModel.route {
         case .home:
-            HomeView(onPlay: viewModel.openLevelSelect)
+            HomeView(
+                canContinue: viewModel.canContinue(),
+                onContinue: viewModel.continueLastLevel,
+                onPlay: viewModel.openLevelSelect
+            )
         case .levelSelect:
             LevelSelectView(
                 levels: LevelConfig.easyTier,

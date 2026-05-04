@@ -86,7 +86,7 @@ Control: Product Agent
 Owner: iOS Architect Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Implement continue-from-last-level behavior.
+- [x] Status: `done` | Implement continue-from-last-level behavior.
 Owner: Gameplay Engineer Agent
 Control: Product Agent
 
@@ -95,7 +95,7 @@ Control: Product Agent
 Owner: QA/Test Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Add unit tests for service contracts and persistence.
+- [ ] Status: `in-progress` | Add unit tests for service contracts and persistence.
 Owner: QA/Test Agent
 Control: Product Agent
 
