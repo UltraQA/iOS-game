@@ -2,19 +2,27 @@ import SpriteKit
 
 final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     private let controller: GameSessionController
+    private let onFinish: (Bool, Int) -> Void
 
+    private var onProgress: ((Int) -> Void)?
     private var player = SKSpriteNode(color: .white, size: CGSize(width: 36, height: 36))
     private var didSetup = false
     private var isOnGround = false
+    private var didEndRun = false
 
-    init(size: CGSize, controller: GameSessionController) {
+    init(size: CGSize, controller: GameSessionController, onFinish: @escaping (Bool, Int) -> Void) {
         self.controller = controller
+        self.onFinish = onFinish
         super.init(size: size)
         scaleMode = .resizeFill
     }
 
     required init?(coder aDecoder: NSCoder) {
         return nil
+    }
+
+    func setProgressListener(_ listener: @escaping (Int) -> Void) {
+        onProgress = listener
     }
 
     override func didMove(to view: SKView) {
@@ -43,9 +51,10 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
 
         player.physicsBody?.velocity.dx = controller.level.runSpeed
         controller.updateProgress(playerX: player.position.x)
+        onProgress?(controller.state.score)
 
         if player.position.y < -80 {
-            controller.fail()
+            endRun(completed: false)
         }
     }
 
@@ -57,11 +66,11 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         }
 
         if mask == (PhysicsCategory.player | PhysicsCategory.obstacle) {
-            controller.fail()
+            endRun(completed: false)
         }
 
         if mask == (PhysicsCategory.player | PhysicsCategory.finish) {
-            controller.complete()
+            endRun(completed: true)
         }
     }
 
@@ -70,6 +79,20 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         if mask == (PhysicsCategory.player | PhysicsCategory.ground) {
             isOnGround = false
         }
+    }
+
+    private func endRun(completed: Bool) {
+        guard !didEndRun else { return }
+        didEndRun = true
+
+        if completed {
+            controller.complete()
+        } else {
+            controller.fail()
+        }
+
+        isPaused = true
+        onFinish(completed, controller.state.score)
     }
 
     private func jump() {

@@ -1,7 +1,6 @@
 import CoreGraphics
 import Foundation
 
-@MainActor
 final class GameSessionController {
     private(set) var state: GameState
     private(set) var level: LevelConfig
@@ -11,6 +10,10 @@ final class GameSessionController {
     init(level: LevelConfig, bestScore: Int = 0) {
         self.level = level
         self.state = GameState(phase: .idle, score: 0, bestScore: bestScore, remainingSeconds: 60)
+    }
+
+    var progress: CGFloat {
+        CGFloat(state.score) / 100.0
     }
 
     func start() {
