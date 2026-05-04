@@ -10,11 +10,11 @@ struct RootView: View {
     var body: some View {
         switch viewModel.route {
         case .home:
-            HomeView(onPlay: viewModel.startEasyLevel1)
+            HomeView(onPlay: viewModel.openLevelSelect)
+        case .levelSelect:
+            LevelSelectView(onSelectLevel: viewModel.start(level:), onBack: viewModel.goHome)
         case .gameplay(let level):
-            GameplayContainerView(level: level, onFinish: viewModel.finish)
-        case .result(let result):
-            ResultView(result: result, onRetry: viewModel.startEasyLevel1, onHome: viewModel.goHome)
+            GameplayContainerView(level: level, onExitHome: viewModel.goHome)
         }
     }
 }

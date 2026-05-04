@@ -25,6 +25,18 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         onProgress = listener
     }
 
+    func pauseGameplay() {
+        guard controller.state.phase == .running else { return }
+        controller.pause()
+        isPaused = true
+    }
+
+    func resumeGameplay() {
+        guard controller.state.phase == .paused else { return }
+        controller.resume()
+        isPaused = false
+    }
+
     override func didMove(to view: SKView) {
         guard !didSetup else { return }
         didSetup = true

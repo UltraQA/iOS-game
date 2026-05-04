@@ -4,12 +4,12 @@ import Foundation
 final class RootViewModel: ObservableObject {
     @Published private(set) var route: RootRoute = .home
 
-    func startEasyLevel1() {
-        route = .gameplay(.easy1)
+    func openLevelSelect() {
+        route = .levelSelect
     }
 
-    func finish(result: GameResult) {
-        route = .result(result)
+    func start(level: LevelConfig) {
+        route = .gameplay(level)
     }
 
     func goHome() {

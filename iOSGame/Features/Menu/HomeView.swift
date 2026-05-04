@@ -8,7 +8,7 @@ struct HomeView: View {
             Text("One Tap Platformer")
                 .font(.system(size: 32, weight: .bold, design: .rounded))
 
-            Text("Easy-1")
+            Text("Jump with timing. Reach the finish gate.")
                 .font(.headline)
                 .foregroundStyle(.secondary)
 

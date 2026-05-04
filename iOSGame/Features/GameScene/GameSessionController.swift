@@ -23,6 +23,16 @@ final class GameSessionController {
         state.remainingSeconds = 60
     }
 
+    func pause() {
+        phaseMachine.handle(.pause)
+        state.phase = phaseMachine.phase
+    }
+
+    func resume() {
+        phaseMachine.handle(.resume)
+        state.phase = phaseMachine.phase
+    }
+
     func updateProgress(playerX: CGFloat) {
         guard state.phase == .running else { return }
         let progress = max(0, min(playerX / level.finishX, 1))
