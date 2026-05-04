@@ -1,11 +1,20 @@
+import AudioToolbox
 import Foundation
 
 final class AudioManager: AudioPlaying {
     func playTap() {
-        // TODO: wire SFX engine (AVAudioEngine / SKAction sounds)
+        AudioServicesPlaySystemSound(1104)
     }
 
     func playGameOver() {
-        // TODO: wire SFX engine (AVAudioEngine / SKAction sounds)
+        AudioServicesPlaySystemSound(1521)
+    }
+
+    func playSuccess() {
+        AudioServicesPlaySystemSound(1519)
+    }
+
+    func playPause() {
+        AudioServicesPlaySystemSound(1103)
     }
 }

@@ -18,6 +18,9 @@ struct GameplayContainerView: View {
     @State private var scene: SKScene
     @State private var overlay: RunOverlayState = .none
 
+    private let haptics = HapticsManager()
+    private let audio = AudioManager()
+
     init(
         level: LevelConfig,
         onCompleted: @escaping (LevelID) -> Void,
@@ -60,6 +63,8 @@ struct GameplayContainerView: View {
         guard overlay == .none else { return }
         if let platformer = scene as? PlatformerScene {
             platformer.pauseGameplay()
+            haptics.impactSoft()
+            audio.playPause()
             overlay = .paused
         }
     }
@@ -67,6 +72,7 @@ struct GameplayContainerView: View {
     private func resumeTapped() {
         if let platformer = scene as? PlatformerScene {
             platformer.resumeGameplay()
+            haptics.impactLight()
             overlay = .none
         }
     }
@@ -74,6 +80,7 @@ struct GameplayContainerView: View {
     private func retryTapped() {
         score = 0
         overlay = .none
+        haptics.impactLight()
         scene = GameplayContainerView.makeScene(level: level, score: $score, overlay: $overlay, onCompleted: onCompleted)
         attachSceneListeners()
     }
@@ -82,6 +89,19 @@ struct GameplayContainerView: View {
         if let platformer = scene as? PlatformerScene {
             platformer.setProgressListener { value in
                 score = value
+            }
+            platformer.setJumpListener {
+                haptics.impactLight()
+                audio.playTap()
+            }
+            platformer.setResultListener { completed in
+                if completed {
+                    haptics.notifySuccess()
+                    audio.playSuccess()
+                } else {
+                    haptics.notifyError()
+                    audio.playGameOver()
+                }
             }
         }
     }

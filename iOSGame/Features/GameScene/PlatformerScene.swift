@@ -5,6 +5,9 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
     private let onFinish: (Bool, Int) -> Void
 
     private var onProgress: ((Int) -> Void)?
+    private var onJump: (() -> Void)?
+    private var onResult: ((Bool) -> Void)?
+
     private var player = SKSpriteNode(color: .white, size: CGSize(width: 36, height: 36))
     private var didSetup = false
     private var isOnGround = false
@@ -23,6 +26,14 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
 
     func setProgressListener(_ listener: @escaping (Int) -> Void) {
         onProgress = listener
+    }
+
+    func setJumpListener(_ listener: @escaping () -> Void) {
+        onJump = listener
+    }
+
+    func setResultListener(_ listener: @escaping (Bool) -> Void) {
+        onResult = listener
     }
 
     func pauseGameplay() {
@@ -104,6 +115,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         }
 
         isPaused = true
+        onResult?(completed)
         onFinish(completed, controller.state.score)
     }
 
@@ -111,6 +123,7 @@ final class PlatformerScene: SKScene, SKPhysicsContactDelegate {
         guard isOnGround else { return }
         player.physicsBody?.velocity.dy = 0
         player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: controller.level.jumpImpulse))
+        onJump?()
     }
 
     private func setupGround() {

@@ -52,11 +52,11 @@ Control: Product Agent
 Owner: Gameplay Engineer Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Implement fail/retry loop under 1 second restart time.
+- [x] Status: `done` | Implement fail/retry loop under 1 second restart time.
 Owner: Gameplay Engineer Agent
 Control: Product Agent
 
-- [ ] Status: `todo` | Integrate haptics and basic SFX feedback.
+- [x] Status: `done` | Integrate haptics and basic SFX feedback.
 Owner: Gameplay Engineer Agent
 Control: Product Agent
 

@@ -8,12 +8,15 @@ protocol ScoreStorage {
 protocol AudioPlaying {
     func playTap()
     func playGameOver()
+    func playSuccess()
+    func playPause()
 }
 
 protocol HapticsProviding {
     func impactLight()
     func notifySuccess()
     func notifyError()
+    func impactSoft()
 }
 
 struct AppEnvironment {

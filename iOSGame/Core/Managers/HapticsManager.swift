@@ -5,6 +5,10 @@ final class HapticsManager: HapticsProviding {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
     }
 
+    func impactSoft() {
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+    }
+
     func notifySuccess() {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
